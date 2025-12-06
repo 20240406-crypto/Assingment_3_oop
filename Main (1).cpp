@@ -137,6 +137,23 @@ void play_obstacles() {
     delete[] players;
     delete game_ui;
 }
+void play_word_ttt() {
+    cout << "\n--- Starting Word Tic-Tac-Toe Game (3x3) ---\n";
+   
+
+    wrdTic_UI* game_ui = new wrdTic_UI();
+    wrdTic_Board* board = new wrdTic_Board();
+    Player<char>** players = game_ui->setup_players();
+
+    GameManager<char> wrdTic_game(board, players, game_ui);
+    game.run();
+
+    delete board;
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete game_ui;
+}
 
 int main() {
     srand(static_cast<unsigned int>(time(0)));
@@ -153,6 +170,7 @@ int main() {
         cout << "4. Tic-Tac-Toe (5x5) (Disabled)\n";
         cout << "5. Four-in-a-Row (4x4)\n";
         cout << "6. SUS Game\n";
+        cout << "7.Word Tic-Tac-Toe Game (3x3)";
         cout << "\n0. Exit\n";
         cout << "========================================\n";
         cout << "Enter your choice: ";
@@ -169,9 +187,10 @@ int main() {
         case 1: play_numeric_t3(); break; 
         case 2: play_misere(); break; 
         case 3: play_obstacles(); break; 
-        case 4: play_tic5(); break; 
+        case 4: play_five_by_five(); break; 
         case 5: play_four_by_four(); break;
         case 6: play_sus(); break;
+        case 7: play_word_ttt(); break;
         case 0:
             cout << "Thank you for playing!\n";
             break;
@@ -188,3 +207,4 @@ int main() {
     return 0;
 
 }
+
