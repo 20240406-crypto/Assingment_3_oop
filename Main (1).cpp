@@ -10,11 +10,13 @@
 #include "NumericT3_Classes.h"
 #include "FourByFour_Classes.h"
 #include "SUS_Classes.h"
-#include "3_Tic_Classes.h"
+#include "5x5_Tic_Classes.h"
 #include "Misere_Board.h"  
 #include "Misere_UI.h"
 #include "Obstacles_Board.h"  
 #include "Obstacles_UI.h"
+#include "Word_Tic_Classes.h"
+
 
 using namespace std;
 
@@ -72,7 +74,7 @@ void play_sus() {
 }
 
 
-void play_tic5() {
+void play_five_by_five() {
     cout << "\n--- Starting 5x5 Tic-Tac-Toe (Count Triplets) Game ---\n";
 
     Tic5_UI* ui = new Tic5_UI();
@@ -129,7 +131,7 @@ void play_obstacles() {
     GameManager<char> game(obstacles_board, players, game_ui);
     game.run();
 
-     delete obstacles_board;
+    delete obstacles_board;
     delete players[0];
     delete players[1];
     delete[] players;
@@ -184,4 +186,5 @@ int main() {
         }
     }
     return 0;
+
 }
