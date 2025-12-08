@@ -17,15 +17,12 @@ Move<char>* Diamond_UI::get_move(Player<char>* p) {
 
     if (p->get_type() == PlayerType::COMPUTER) {
 
-        cout << "Computer turn (" << p->get_name() << " - " << symbol << ") is selecting its move..." << endl;
+        cout << "Computer turn (" << p->get_name() << " - " << symbol << ") is calculating its best move using AI..." << endl;
 
-        vector<Move<char>> valid_moves = board_ptr->get_valid_moves(symbol);
+        Move<char> best_move = board_ptr->get_best_move(symbol);
 
-        if (!valid_moves.empty()) {
-            int random_index = rand() % valid_moves.size();
-            r = valid_moves[random_index].get_x();
-            c = valid_moves[random_index].get_y();
-        }
+        r = best_move.get_x();
+        c = best_move.get_y();
 
     }
     else {

@@ -1,4 +1,4 @@
-#include "Obstacles_Board.h"
+ï»¿#include "Obstacles_Board.h"
 #include <iostream>
 #include <cctype>
 #include <ctime> 
@@ -6,24 +6,40 @@
 
 using namespace std;
 
-// ========================================================
-// ÈÇäí ÇáßáÇÓ (Constructor)
-// ========================================================
 Obstacles_Board::Obstacles_Board() : Board(6, 6) {
     srand((unsigned int)time(0));
     for (auto& row : board)
         for (auto& cell : row)
-            cell = ' '; // Êã ÊÚÏíáåÇ Åáì ÇáãÓÇİÉ ÇáİÇÑÛÉ ' '
+            cell = ' ';
 
     add_obstacle();
     add_obstacle();
 }
 
-// ========================================================
-// ÏÇáÉ ÅÖÇİÉ ÚÇÆŞ ÚÔæÇÆí
-// ========================================================
 void Obstacles_Board::add_obstacle() {
     int r, c;
+
+    // ========================================================
+    // **Ø§Ù„ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù‡Ø§Ù…:** Ù†ØªØ­Ù‚Ù‚ Ø£ÙˆÙ„Ø§Ù‹ Ù…Ù† ÙˆØ¬ÙˆØ¯ Ø£ÙŠ Ø®Ù„ÙŠØ© ÙØ§Ø±ØºØ© Ù„Ù…Ù†Ø¹ Ø§Ù„ØªÙˆÙ‚Ù Ø§Ù„Ù„Ø§Ù†Ù‡Ø§Ø¦ÙŠ
+    // ========================================================
+    int blank_count = 0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            if (board[i][j] == blank) {
+                blank_count++;
+            }
+        }
+    }
+
+    if (blank_count == 0) {
+        // Ù„Ø§ ØªÙˆØ¬Ø¯ Ø®Ù„Ø§ÙŠØ§ ÙØ§Ø±ØºØ© Ù…ØªØ¨Ù‚ÙŠØ©ØŒ Ù†Ø®Ø±Ø¬ Ø¨Ø£Ù…Ø§Ù†
+        return;
+    }
+    // ========================================================
+    // Ù†Ù‡Ø§ÙŠØ© Ø§Ù„ØªØ¹Ø¯ÙŠÙ„
+    // ========================================================
+
+    // Ø§Ù„Ù…Ù†Ø·Ù‚ Ø§Ù„Ø£ØµÙ„ÙŠ: Ù†Ø¨Ø­Ø« Ø¹Ù† Ù…ÙƒØ§Ù† Ø¹Ø´ÙˆØ§Ø¦ÙŠ ÙØ§Ø±Øº
     do {
         r = rand() % 6;
         c = rand() % 6;
@@ -32,34 +48,31 @@ void Obstacles_Board::add_obstacle() {
     board[r][c] = obstacle;
 }
 
-// ========================================================
-// ÏÇáÉ ÇáÊÍŞŞ ãä 4 İí Õİ
-// ========================================================
 bool Obstacles_Board::four_in_row(char sym) {
     sym = toupper(sym);
 
-    // 1. ÇáÊÍŞŞ ãä ÇáÕİæİ
+    // 1. Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„ØµÙÙˆÙ
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j <= columns - 4; j++) {
             if (board[i][j] == sym && board[i][j + 1] == sym && board[i][j + 2] == sym && board[i][j + 3] == sym)
                 return true;
         }
     }
-    // 2. ÇáÊÍŞŞ ãä ÇáÃÚãÏÉ
+    // 2. Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø£Ø¹Ù…Ø¯Ø©
     for (int j = 0; j < columns; j++) {
         for (int i = 0; i <= rows - 4; i++) {
             if (board[i][j] == sym && board[i + 1][j] == sym && board[i + 2][j] == sym && board[i + 3][j] == sym)
                 return true;
         }
     }
-    // 3.1. ÇáÃŞØÇÑ ÇáäÇÒáÉ
+    // 3. Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø£Ù‚Ø·Ø§Ø± (Ù…Ù† Ø£Ø¹Ù„Ù‰ Ø§Ù„ÙŠØ³Ø§Ø± Ù„Ø£Ø³ÙÙ„ Ø§Ù„ÙŠÙ…ÙŠÙ†)
     for (int i = 0; i <= rows - 4; i++) {
         for (int j = 0; j <= columns - 4; j++) {
             if (board[i][j] == sym && board[i + 1][j + 1] == sym && board[i + 2][j + 2] == sym && board[i + 3][j + 3] == sym)
                 return true;
         }
     }
-    // 3.2. ÇáÃŞØÇÑ ÇáÕÇÚÏÉ
+    // 4. Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø£Ù‚Ø·Ø§Ø± (Ù…Ù† Ø£Ø¹Ù„Ù‰ Ø§Ù„ÙŠÙ…ÙŠÙ† Ù„Ø£Ø³ÙÙ„ Ø§Ù„ÙŠØ³Ø§Ø±)
     for (int i = 0; i <= rows - 4; i++) {
         for (int j = 3; j < columns; j++) {
             if (board[i][j] == sym && board[i + 1][j - 1] == sym && board[i + 2][j - 2] == sym && board[i + 3][j - 3] == sym)
@@ -70,9 +83,6 @@ bool Obstacles_Board::four_in_row(char sym) {
     return false;
 }
 
-// ========================================================
-// ÏÇáÉ ÊÍÏíË ÇááæÍÉ 
-// ========================================================
 bool Obstacles_Board::update_board(Move<char>* move) {
     int x = move->get_x();
     int y = move->get_y();
@@ -92,22 +102,17 @@ bool Obstacles_Board::update_board(Move<char>* move) {
     board[x][y] = toupper(sym);
     n_moves++;
 
+    // Ø§Ù„Ø¢Ù† Ø³ÙŠØªÙ… Ø§Ø³ØªØ¯Ø¹Ø§Ø¡ Ø§Ù„Ø¯Ø§Ù„Ø© Ø¨Ø£Ù…Ø§Ù†ØŒ ÙˆÙ„Ù† ØªØ³Ø¨Ø¨ Ø­Ù„Ù‚Ø© Ù„Ø§Ù†Ù‡Ø§Ø¦ÙŠØ© Ø¥Ø°Ø§ ÙƒØ§Ù†Øª Ø§Ù„Ù„ÙˆØ­Ø© Ù…Ù…ØªÙ„Ø¦Ø©
     add_obstacle();
     add_obstacle();
 
     return true;
 }
 
-// ========================================================
-// ÏÇáÉ ÇáİæÒ (ÇáÊí ßÇäÊ ãİŞæÏÉ)
-// ========================================================
 bool Obstacles_Board::is_win(Player<char>* player) {
     return four_in_row(player->get_symbol());
 }
 
-// ========================================================
-// ÏÇáÉ ÇáÊÚÇÏá (áÍá ãÔßáÉ ÚÏã ÇáÅÚáÇä Úä ÇáÊÚÇÏá)
-// ========================================================
 bool Obstacles_Board::is_draw(Player<char>* player) {
     int total_empty = 0;
 
@@ -120,19 +125,15 @@ bool Obstacles_Board::is_draw(Player<char>* player) {
     }
 
     if (total_empty == 0) {
-        // ØÈÇÚÉ ãÈÇÔÑÉ áÖãÇä ÙåæÑ ÇáÑÓÇáÉ 
-        std::cout << "\n======================================================\n";
-        std::cout << "               ÊÚÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÇÏá!              \n";
+        /*std::cout << "\n======================================================\n";
+        std::cout << "               DRAW!              \n";
         std::cout << "======================================================\n";
-        return true;
+        */return true;
     }
 
     return false;
 }
 
-// ========================================================
-// ÏÇáÉ äåÇíÉ ÇááÚÈÉ
-// ========================================================
 bool Obstacles_Board::game_is_over(Player<char>* player) {
     return is_win(player) || is_draw(player);
 }
