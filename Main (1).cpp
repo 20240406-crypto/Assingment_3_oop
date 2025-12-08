@@ -4,6 +4,7 @@
 #include <limits>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 
 
 #include "BoardGame_Classes.h"
@@ -16,6 +17,8 @@
 #include "Obstacles_Board.h"  
 #include "Obstacles_UI.h"
 #include "Word_Tic_Classes.h"
+#include "Mini_TTT_Classes.h" 
+#include "Ultimate_TTT_Classes.h"
 
 
 using namespace std;
@@ -154,6 +157,26 @@ void play_word_ttt() {
     delete[] players;
     delete game_ui;
 }
+void play_ultimate_ttt_game() {
+
+    Ultimate_TTT_UI* game_ui_ultimate = new Ultimate_TTT_UI();
+    Ultimate_TTT_Board* ultimate_board = new Ultimate_TTT_Board();
+
+    Player<char>** players = game_ui_ultimate->setup_players();
+    players[0]->set_board_ptr(ultimate_board);
+    players[1]->set_board_ptr(ultimate_board);
+
+    ultimate_board->display_nested_board(game_ui_ultimate);
+
+    GameManager<char> ultimate_ttt_game(ultimate_board, players, game_ui_ultimate);
+    ultimate_ttt_game.run();
+
+    delete ultimate_board;
+    for (int i = 0; i < 2; ++i) {delete players[i];}
+    delete[] players;
+    delete game_ui_ultimate;
+}
+
 
 int main() {
     srand(static_cast<unsigned int>(time(0)));
@@ -171,6 +194,8 @@ int main() {
         cout << "5. Four-in-a-Row (4x4)\n";
         cout << "6. SUS Game\n";
         cout << "7.Word Tic-Tac-Toe Game (3x3)";
+        cout << "8.Ultimate Tic-Tac-Toe Game (9x9)";
+
         cout << "\n0. Exit\n";
         cout << "========================================\n";
         cout << "Enter your choice: ";
@@ -191,6 +216,7 @@ int main() {
         case 5: play_four_by_four(); break;
         case 6: play_sus(); break;
         case 7: play_word_ttt(); break;
+        case 8: play_ultimate_ttt_game(); break;
         case 0:
             cout << "Thank you for playing!\n";
             break;
@@ -207,4 +233,5 @@ int main() {
     return 0;
 
 }
+
 
